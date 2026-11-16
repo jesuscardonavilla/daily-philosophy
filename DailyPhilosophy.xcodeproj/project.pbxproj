@@ -1,0 +1,41 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+		A9D2C2EE002F0D9133480A15 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyPhilosophyApp.swift; sourceTree = "<group>"; };
+		4F5D8B2F648D8AEBE7DF8F59 = {isa = PBXBuildFile; fileRef = A9D2C2EE002F0D9133480A15; };
+		DC8DB2178C39CD3B941D30BA = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		62ADFAF7EDC910F8379C61C6 = {isa = PBXBuildFile; fileRef = DC8DB2178C39CD3B941D30BA; };
+		713128D426E99B4123DFAB2B = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
+		8D6D7837B9AB0E4B86332B89 = {isa = PBXBuildFile; fileRef = 713128D426E99B4123DFAB2B; };
+		3C5D44C48135A763F7FCD89D = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
+		91EC9D3DFAD3A9C683519866 = {isa = PBXBuildFile; fileRef = 3C5D44C48135A763F7FCD89D; };
+		7FFF3FBE628560572DDE666F = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
+		FFA9AE296341F0EC1BEE6DED = {isa = PBXBuildFile; fileRef = 7FFF3FBE628560572DDE666F; };
+		E781185CA2C621226E6D5F69 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaudeClient.swift; sourceTree = "<group>"; };
+		B7246868DD1AD5D0F1A1B756 = {isa = PBXBuildFile; fileRef = E781185CA2C621226E6D5F69; };
+		F9B10D6BF634AD73DAD434A6 = {isa = PBXFileReference; lastKnownFileType = text.html; path = "Resources/index.html"; sourceTree = "<group>"; };
+		5544F71AB9EA43550C4AFAEE = {isa = PBXBuildFile; fileRef = F9B10D6BF634AD73DAD434A6; };
+		67D2F11CB0375010AEF3E8F4 = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Assets.xcassets"; sourceTree = "<group>"; };
+		121B2F4179DFD18DB91D6010 = {isa = PBXBuildFile; fileRef = 67D2F11CB0375010AEF3E8F4; };
+		F5BF48AA40CAD7891EB709FC = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DailyPhilosophy.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		107135D82C0898ACC5295C33 = {isa = PBXGroup; children = (A9D2C2EE002F0D9133480A15 /* DailyPhilosophyApp.swift */,DC8DB2178C39CD3B941D30BA /* ContentView.swift */,713128D426E99B4123DFAB2B /* WebView.swift */,3C5D44C48135A763F7FCD89D /* Keychain.swift */,7FFF3FBE628560572DDE666F /* Store.swift */,E781185CA2C621226E6D5F69 /* ClaudeClient.swift */,F9B10D6BF634AD73DAD434A6 /* index.html */,67D2F11CB0375010AEF3E8F4 /* Assets.xcassets */); path = DailyPhilosophy; sourceTree = "<group>"; };
+		3936A56E033FE156B0D38F79 = {isa = PBXGroup; children = (F5BF48AA40CAD7891EB709FC); name = Products; sourceTree = "<group>"; };
+		B19911C44BD755AB4F173858 = {isa = PBXGroup; children = (107135D82C0898ACC5295C33, 3936A56E033FE156B0D38F79); sourceTree = "<group>"; };
+		7C0010B090EBC80AE5972A29 = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (4F5D8B2F648D8AEBE7DF8F59,62ADFAF7EDC910F8379C61C6,8D6D7837B9AB0E4B86332B89,91EC9D3DFAD3A9C683519866,FFA9AE296341F0EC1BEE6DED,B7246868DD1AD5D0F1A1B756); runOnlyForDeploymentPostprocessing = 0; };
+		D35441678F4E92018E639BC5 = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (5544F71AB9EA43550C4AFAEE,121B2F4179DFD18DB91D6010); runOnlyForDeploymentPostprocessing = 0; };
+		54E8AA43A04EFB5B5DEBD041 = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+		804C5648A03872283FF48DB1 = {isa = XCBuildConfiguration; buildSettings = {ALWAYS_SEARCH_USER_PATHS = NO; CLANG_ENABLE_MODULES = YES; CLANG_ENABLE_OBJC_ARC = YES; COPY_PHASE_STRIP = NO; ENABLE_STRICT_OBJC_MSGSEND = YES; GCC_NO_COMMON_BLOCKS = YES; IPHONEOS_DEPLOYMENT_TARGET = 16.0; SDKROOT = iphoneos; MTL_FAST_MATH = YES; DEBUG_INFORMATION_FORMAT = dwarf; ENABLE_TESTABILITY = YES; GCC_OPTIMIZATION_LEVEL = 0; ONLY_ACTIVE_ARCH = YES; SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG; SWIFT_OPTIMIZATION_LEVEL = "-Onone"; }; name = Debug; };
+		7A9A911DF2E267833485F8CE = {isa = XCBuildConfiguration; buildSettings = {ALWAYS_SEARCH_USER_PATHS = NO; CLANG_ENABLE_MODULES = YES; CLANG_ENABLE_OBJC_ARC = YES; COPY_PHASE_STRIP = NO; ENABLE_STRICT_OBJC_MSGSEND = YES; GCC_NO_COMMON_BLOCKS = YES; IPHONEOS_DEPLOYMENT_TARGET = 16.0; SDKROOT = iphoneos; MTL_FAST_MATH = YES; DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym"; ENABLE_NS_ASSERTIONS = NO; SWIFT_COMPILATION_MODE = wholemodule; VALIDATE_PRODUCT = YES; }; name = Release; };
+		B89D620B0DEFA0E92F8F0DB7 = {isa = XCBuildConfiguration; buildSettings = {ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon; ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor; CODE_SIGN_STYLE = Automatic; CURRENT_PROJECT_VERSION = 1; GENERATE_INFOPLIST_FILE = YES; INFOPLIST_KEY_CFBundleDisplayName = "Daily Philosophy"; INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES; INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES; INFOPLIST_KEY_UILaunchScreen_Generation = YES; INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait; LD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_path/Frameworks"); MARKETING_VERSION = 1.0; PRODUCT_BUNDLE_IDENTIFIER = com.jesuscardonavilla.dailyphilosophy; PRODUCT_NAME = "$(TARGET_NAME)"; SWIFT_EMIT_LOC_STRINGS = YES; SWIFT_VERSION = 5.0; TARGETED_DEVICE_FAMILY = 1; }; name = Debug; };
+		0D6CC5BE54225B2D214C0AF4 = {isa = XCBuildConfiguration; buildSettings = {ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon; ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor; CODE_SIGN_STYLE = Automatic; CURRENT_PROJECT_VERSION = 1; GENERATE_INFOPLIST_FILE = YES; INFOPLIST_KEY_CFBundleDisplayName = "Daily Philosophy"; INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES; INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES; INFOPLIST_KEY_UILaunchScreen_Generation = YES; INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait; LD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_path/Frameworks"); MARKETING_VERSION = 1.0; PRODUCT_BUNDLE_IDENTIFIER = com.jesuscardonavilla.dailyphilosophy; PRODUCT_NAME = "$(TARGET_NAME)"; SWIFT_EMIT_LOC_STRINGS = YES; SWIFT_VERSION = 5.0; TARGETED_DEVICE_FAMILY = 1; }; name = Release; };
+		4704357D31391BE81C31195C = {isa = XCConfigurationList; buildConfigurations = (804C5648A03872283FF48DB1, 7A9A911DF2E267833485F8CE); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		6332F53C82F410CF08F794C6 = {isa = XCConfigurationList; buildConfigurations = (B89D620B0DEFA0E92F8F0DB7, 0D6CC5BE54225B2D214C0AF4); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		42AEFBAE01D2DFD981F7DA7D = {isa = PBXNativeTarget; buildConfigurationList = 6332F53C82F410CF08F794C6; buildPhases = (7C0010B090EBC80AE5972A29, 54E8AA43A04EFB5B5DEBD041, D35441678F4E92018E639BC5); buildRules = (); dependencies = (); name = DailyPhilosophy; productName = DailyPhilosophy; productReference = F5BF48AA40CAD7891EB709FC; productType = "com.apple.product-type.application"; };
+		46F86FAA6BBF9AC94A7E4595 = {isa = PBXProject; attributes = {BuildIndependentTargetsInParallel = 1; LastSwiftUpdateCheck = 1500; LastUpgradeCheck = 1500; }; buildConfigurationList = 4704357D31391BE81C31195C; compatibilityVersion = "Xcode 14.0"; developmentRegion = en; hasScannedForEncodings = 0; knownRegions = (en, Base); mainGroup = B19911C44BD755AB4F173858; productRefGroup = 3936A56E033FE156B0D38F79; projectDirPath = ""; projectRoot = ""; targets = (42AEFBAE01D2DFD981F7DA7D); };
+	};
+	rootObject = 46F86FAA6BBF9AC94A7E4595;
+}
