@@ -29,5 +29,5 @@ The app lives in the web file. After editing it, run `./sync_web.sh path/to/inde
 
 ## Notes
 
-- Fonts load from Google Fonts, so the first launch needs internet. Offline it falls back to the system font.
+- The app uses the system Helvetica Neue, so it works offline.
 - The model is set in `ClaudeClient.swift` (`model`).
