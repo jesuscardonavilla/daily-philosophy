@@ -2393,9 +2393,10 @@ function viewChat(){
   var err=V.err?'<p class="note" role="alert" style="color:#B3261E">'+esc(V.err)+'</p>':'';
   var can=NATIVE&&HASKEY&&!V.busy;
   var disc=living?'This is an AI guide explaining '+t.name+'’s ideas. It is not them and does not speak for them.':'This is an AI imitation, built from '+t.name+'’s ideas and books. It is not their real words.';
-  return '<div class="hero" style="'+tintStyle(t)+'"><button type="button" class="back" data-act="go" data-to="'+back+'" data-id="'+t.id+'">'+icoBack()+'Back</button>'+
+  return '<div class="hero" style="'+tintStyle(t)+'"><button type="button" class="back" data-act="chatback">'+icoBack()+'Back</button>'+
     '<p class="eyebrow">Conversation</p><h1>'+esc(t.name)+'</h1><p class="years">'+esc(t.title)+'</p></div>'+
-    '<div class="stack"><p class="note">'+esc(disc)+'</p>'+gate+'<div class="chat" id="chatlist" aria-live="polite">'+bubbles+'</div>'+err+'</div>'+
+    '<div class="stack"><p class="note">'+esc(disc)+'</p>'+gate+'<div class="chat" id="chatlist" aria-live="polite">'+bubbles+'</div>'+err+
+    (hasTalked(t.id)&&!V.busy?'<button type="button" class="btn ghost" data-act="delHist" style="'+(V.confirmDel?'color:#B3261E;font-weight:700':'')+'">'+(V.confirmDel?'Tap again to delete this conversation':'Delete history')+'</button>':'')+'</div>'+
     '<div class="dock chatdock"><textarea id="chatin" rows="2" placeholder="Answer, argue, or ask back." aria-label="Your message">'+esc(V.draft||'')+'</textarea>'+
     '<button type="button" class="btn" data-act="send"'+(can?'':' disabled')+'>Send</button></div>';
 }
@@ -2456,7 +2457,8 @@ function viewCard(){
     body='<div class="stack"><p class="eyebrow">Think of it like</p><div class="panel big">'+esc(t.analogy)+'</div></div>';
   }else{
     body='<div class="stack"><div class="panel dark"><p class="eyebrow">For today</p><p class="q">'+esc(t.question)+'</p></div>'+
-      '<div><label class="lbl" for="note">Jot a thought (optional)</label><textarea id="note" placeholder="A sentence is enough.">'+esc(S.notes[t.id]||'')+'</textarea><p class="note" id="notestatus" role="status" style="margin-top:6px">'+esc(noteStatus(t.id))+'</p></div></div>';
+      '<div><label class="lbl" for="note">Jot a thought (optional)</label><textarea id="note" placeholder="A sentence is enough.">'+esc(S.notes[t.id]||'')+'</textarea><p class="note" id="notestatus" role="status" style="margin-top:6px">'+esc(noteStatus(t.id))+'</p>'+
+        '<button type="button" class="btn secondary" id="hearbtn" style="margin-top:10px" data-act="hearBack"'+(String(S.notes[t.id]||'').trim()?'':' disabled')+'>Hear back from '+esc(shortName(t))+'</button></div></div>';
   }
   var dock=step===0?
     '<div class="dock"><button type="button" class="btn" data-act="next">Next'+icoNext()+'</button></div>':
@@ -2728,6 +2730,28 @@ app.addEventListener('click',function(e){
       openChat(S.day.id,'done',true);
       break;
     case 'chat':openChat(d.id,d.from,!!d.seed);break;
+    case 'hearBack':
+      var hid=V.id,hret={name:'card',id:V.id,step:V.step,mode:V.mode},hnote=String(S.notes[hid]||'').trim();
+      if(!hnote)break;
+      openChat(hid,'card',false);
+      V.ret=hret;
+      if(NATIVE&&HASKEY){sendChat(hnote);}else{V.draft=hnote;render(false);}
+      break;
+    case 'chatback':
+      if(V.ret){V=V.ret;render(true);}
+      else if(V.from==='done')go('done');
+      else if(V.from==='home')go('home');
+      else{V={name:'detail',id:V.id,from:'library'};render(true);}
+      break;
+    case 'delHist':
+      if(!V.confirmDel){V.confirmDel=true;render(false);var dv=V;setTimeout(function(){if(dv===V&&V.confirmDel){V.confirmDel=false;render(false);}},4000);}
+      else{
+        var did=V.id;delete S.chats[did];persist();
+        V.confirmDel=false;V.err=null;V.draft='';
+        chatOf(did).push({r:'a',o:1,t:byId(did).question});
+        render(true);
+      }
+      break;
     case 'send':var ci=document.getElementById('chatin');sendChat(ci?ci.value:V.draft);break;
     case 'saveKey':
       var ki=document.getElementById('keyin');
@@ -2773,6 +2797,8 @@ function saveNote(e){
     }
     var n=document.getElementById('notestatus');
     if(n)n.textContent=noteStatus(V.id);
+    var hb=document.getElementById('hearbtn');
+    if(hb)hb.disabled=!String(e.target.value).trim();
   }
 }
 app.addEventListener('input',saveNote);
