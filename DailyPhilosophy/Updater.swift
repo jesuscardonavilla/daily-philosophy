@@ -11,6 +11,37 @@ enum Updater {
         return dir.appendingPathComponent("index-remote.html")
     }
 
+    static let remoteVersion = URL(string: "https://raw.githubusercontent.com/jesuscardonavilla/daily-philosophy/main/DailyPhilosophy/Resources/version.json")!
+
+    private static func parseVersion(_ data: Data) -> Int? {
+        ((try? JSONSerialization.jsonObject(with: data)) as? [String: Any])?["version"] as? Int
+    }
+
+    private static var bundledVersion: Int {
+        guard let url = Bundle.main.url(forResource: "version", withExtension: "json"),
+              let data = try? Data(contentsOf: url) else { return 0 }
+        return parseVersion(data) ?? 0
+    }
+
+    /// Version of the page currently shown.
+    static var installedVersion: Int {
+        if let url = activeURL(), url == file {
+            return UserDefaults.standard.integer(forKey: "dp.remoteVersion")
+        }
+        return bundledVersion
+    }
+
+    /// True when GitHub has a newer version than the one on screen.
+    static func updateAvailable() async -> Bool {
+        var req = URLRequest(url: remoteVersion)
+        req.cachePolicy = .reloadIgnoringLocalCacheData
+        req.timeoutInterval = 15
+        guard let (data, response) = try? await URLSession.shared.data(for: req),
+              (response as? HTTPURLResponse)?.statusCode == 200,
+              let remote = parseVersion(data) else { return false }
+        return remote > installedVersion
+    }
+
     static var bundled: URL? { Bundle.main.url(forResource: "index", withExtension: "html") }
 
     private static var bundleStamp: Double {
@@ -47,7 +78,14 @@ enum Updater {
               text.contains("daily-philosophy-v1") else {
             throw ClientError.api("The downloaded file didn't look right, so nothing was changed.")
         }
+        // Record which version this is, if GitHub tells us.
+        var vReq = URLRequest(url: remoteVersion)
+        vReq.cachePolicy = .reloadIgnoringLocalCacheData
+        vReq.timeoutInterval = 15
+        var version = 0
+        if let (vData, _) = try? await URLSession.shared.data(for: vReq) { version = parseVersion(vData) ?? 0 }
         try data.write(to: file, options: .atomic)
         UserDefaults.standard.set(bundleStamp, forKey: "dp.bundleStamp")
+        UserDefaults.standard.set(version, forKey: "dp.remoteVersion")
     }
 }

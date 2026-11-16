@@ -21,7 +21,7 @@ Open the app, go to **Settings** (button at the bottom of Today), paste an Anthr
 
 ## Updating without Xcode
 
-Open the app and tap **Update app** on Today (or in Settings). It downloads the newest `index.html` from this repo's `main` branch, so content changes need no rebuild. GitHub can take a few minutes to serve a fresh push. **Settings > Go back to the built-in version** removes the downloaded copy. Changes to the Swift code still need an Xcode run.
+The app checks GitHub each time it opens and shows **New version ready. Tap to update** when `version.json` has a newer number. You can also tap **Update app** on Today (or in Settings). It downloads the newest `index.html` from this repo's `main` branch, so content changes need no rebuild. GitHub can take a few minutes to serve a fresh push. **Settings > Go back to the built-in version** removes the downloaded copy. Changes to the Swift code still need an Xcode run.
 
 ## Updating the content
 

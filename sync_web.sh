@@ -3,4 +3,5 @@
 set -e
 SRC="${1:-../philosophy/index.html}"
 sed 's#<meta name="viewport" content="width=device-width, initial-scale=1">#<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">#' "$SRC" > DailyPhilosophy/Resources/index.html
+printf '{"version": %s}\n' "$(date +%s)" > DailyPhilosophy/Resources/version.json
 echo "Copied $SRC to DailyPhilosophy/Resources/index.html"

@@ -1885,7 +1885,8 @@ var HASKEY=!!window.__nativeHasKey;
 function nativePost(o){try{window.webkit.messageHandlers.dp.postMessage(o);}catch(e){}}
 var pending={},reqN=0;
 window.__reply=function(id,text,err){var p=pending[id];if(!p)return;delete pending[id];if(err)p.rej(new Error(err));else p.res(text);};
-var UPD='';
+var UPD='',UPAV=false;
+window.__updateAvailable=function(){UPAV=true;if(typeof V!=='undefined'&&V&&V.name==='home'&&typeof render==='function')render(false);};
 window.__updateStatus=function(msg){UPD=msg||'';if(typeof render==='function')render(false);};
 window.__keyStatus=function(has){HASKEY=!!has;if(typeof V!=="undefined"&&V&&(V.name==='settings'||V.name==='chat')&&!V.busy&&typeof render==="function")render(false);};
 function askAI(system,msgs){
@@ -2447,7 +2448,7 @@ function viewHome(){
     '<div><p class="greet">'+esc(greeting())+' · '+esc(dateLabel())+'</p><h1 class="title">One idea. Then you’re done.</h1></div>'+
     main+
     '<div class="met"><p class="eyebrow plain">Met '+S.seen.length+' of '+THINKERS.length+' thinkers</p><div class="dots" aria-hidden="true">'+dots+'</div></div>'+
-    '<p class="note" id="syncnote">'+esc(syncText())+'</p>'+(NATIVE?'<button type="button" class="btn secondary" data-act="update">Update app</button>'+(UPD?'<p class="note" role="status">'+esc(UPD)+'</p>':'')+'<button type="button" class="btn ghost" data-act="go" data-to="settings">Settings</button>':'')+'</div>'+tabbar('home');
+    '<p class="note" id="syncnote">'+esc(syncText())+'</p>'+(NATIVE&&UPAV?'<div class="panel dark"><p class="eyebrow">Update</p><p class="q">New version ready.</p><button type="button" class="btn" style="margin-top:12px" data-act="update">Tap to update</button></div>':'')+(NATIVE?'<button type="button" class="btn secondary" data-act="update">Update app</button>'+(UPD?'<p class="note" role="status">'+esc(UPD)+'</p>':'')+'<button type="button" class="btn ghost" data-act="go" data-to="settings">Settings</button>':'')+'</div>'+tabbar('home');
 }
 
 function viewCard(){
@@ -2761,7 +2762,7 @@ app.addEventListener('click',function(e){
       if(ki&&ki.value.trim()){nativePost({type:'setKey',key:ki.value.trim()});ki.value='';}
       break;
     case 'delKey':nativePost({type:'delKey'});break;
-    case 'update':UPD='Checking for updates…';render(false);nativePost({type:'update'});break;
+    case 'update':UPAV=false;UPD='Checking for updates…';render(false);nativePost({type:'update'});break;
     case 'resetContent':UPD='';nativePost({type:'resetContent'});break;
     case 'bonusDeeper':
       if(S.day.bonus>=2)return;
@@ -2812,6 +2813,7 @@ app.addEventListener('focusout',saveNote);
 
 render(true);
 initRemote();
+if(NATIVE)nativePost({type:'check'});
 })();
 </script>
 </body>

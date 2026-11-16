@@ -108,6 +108,13 @@ final class Bridge: NSObject, WKScriptMessageHandler {
                 }
             }
 
+        case "check":
+            Task {
+                if await Updater.updateAvailable() {
+                    self.run("window.__updateAvailable && window.__updateAvailable();")
+                }
+            }
+
         case "resetContent":
             Updater.reset()
             reloadPage()

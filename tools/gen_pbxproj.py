@@ -4,7 +4,7 @@ import hashlib,os
 def uid(n): return hashlib.md5(n.encode()).hexdigest()[:24].upper()
 NAME='DailyPhilosophy'
 sources=['DailyPhilosophyApp.swift','ContentView.swift','WebView.swift','Keychain.swift','Store.swift','ClaudeClient.swift','Updater.swift']
-res=[('Resources/index.html','index.html','text.html'),('Assets.xcassets','Assets.xcassets','folder.assetcatalog')]
+res=[('Resources/index.html','index.html','text.html'),('Resources/version.json','version.json','text.json'),('Assets.xcassets','Assets.xcassets','folder.assetcatalog')]
 O=[]
 def obj(i,body): O.append('\t\t%s = %s;'%(i,body))
 fref={};bf={}
@@ -19,14 +19,14 @@ for path,nm,typ in res:
 prod=uid('product');obj(prod,'{isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = %s.app; sourceTree = BUILT_PRODUCTS_DIR; }'%NAME)
 # groups
 g_main=uid('gmain');g_app=uid('gapp');g_prod=uid('gprod')
-kids=','.join(fref[f]+' /* %s */'%f for f in sources+['index.html','Assets.xcassets'])
+kids=','.join(fref[f]+' /* %s */'%f for f in sources+['index.html','version.json','Assets.xcassets'])
 obj(g_app,'{isa = PBXGroup; children = (%s); path = %s; sourceTree = "<group>"; }'%(kids,NAME))
 obj(g_prod,'{isa = PBXGroup; children = (%s); name = Products; sourceTree = "<group>"; }'%prod)
 obj(g_main,'{isa = PBXGroup; children = (%s, %s); sourceTree = "<group>"; }'%(g_app,g_prod))
 # phases
 ph_src=uid('phsrc');ph_res=uid('phres');ph_fw=uid('phfw')
 obj(ph_src,'{isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (%s); runOnlyForDeploymentPostprocessing = 0; }'%','.join(bf[f] for f in sources))
-obj(ph_res,'{isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (%s); runOnlyForDeploymentPostprocessing = 0; }'%','.join(bf[n] for n in ['index.html','Assets.xcassets']))
+obj(ph_res,'{isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (%s); runOnlyForDeploymentPostprocessing = 0; }'%','.join(bf[n] for n in ['index.html','version.json','Assets.xcassets']))
 obj(ph_fw,'{isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; }')
 # configs
 def cfg(i,name,settings):
