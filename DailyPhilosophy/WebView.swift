@@ -8,13 +8,8 @@ struct WebView: UIViewRepresentable {
     func makeUIView(context: Context) -> WKWebView {
         let bridge = context.coordinator
 
-        // Hand the saved state and key status to the page before any of its script runs.
-        let state = Store.loadJSON() ?? "null"
-        let hasKey = Keychain.get() != nil
-        let boot = "window.__nativeState = \(state); window.__nativeHasKey = \(hasKey ? "true" : "false");"
-
         let controller = WKUserContentController()
-        controller.addUserScript(WKUserScript(source: boot, injectionTime: .atDocumentStart, forMainFrameOnly: true))
+        controller.addUserScript(Bridge.bootScript())
         controller.add(bridge, name: "dp")
 
         let config = WKWebViewConfiguration()
@@ -30,11 +25,7 @@ struct WebView: UIViewRepresentable {
         if #available(iOS 16.4, *) { web.isInspectable = true }
         bridge.webView = web
 
-        if let url = Bundle.main.url(forResource: "index", withExtension: "html") {
-            web.loadFileURL(url, allowingReadAccessTo: url.deletingLastPathComponent())
-        } else {
-            web.loadHTMLString("<h1>index.html is missing from the app bundle.</h1>", baseURL: nil)
-        }
+        bridge.loadPage()
         return web
     }
 
@@ -44,6 +35,32 @@ struct WebView: UIViewRepresentable {
 /// Receives messages from the page: save state, manage the API key, ask the model.
 final class Bridge: NSObject, WKScriptMessageHandler {
     weak var webView: WKWebView?
+
+    /// Hands saved state and key status to the page before any of its script runs.
+    static func bootScript() -> WKUserScript {
+        let state = Store.loadJSON() ?? "null"
+        let hasKey = Keychain.get() != nil
+        let js = "window.__nativeState = \(state); window.__nativeHasKey = \(hasKey ? "true" : "false");"
+        return WKUserScript(source: js, injectionTime: .atDocumentStart, forMainFrameOnly: true)
+    }
+
+    func loadPage() {
+        guard let web = webView else { return }
+        if let url = Updater.activeURL() {
+            web.loadFileURL(url, allowingReadAccessTo: url.deletingLastPathComponent())
+        } else {
+            web.loadHTMLString("<h1>index.html is missing from the app bundle.</h1>", baseURL: nil)
+        }
+    }
+
+    private func reloadPage() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self, let web = self.webView else { return }
+            web.configuration.userContentController.removeAllUserScripts()
+            web.configuration.userContentController.addUserScript(Bridge.bootScript())
+            self.loadPage()
+        }
+    }
 
     func userContentController(_ userContentController: WKUserContentController,
                                didReceive message: WKScriptMessage) {
@@ -80,6 +97,20 @@ final class Bridge: NSObject, WKScriptMessageHandler {
                     self.reply(id: id, text: nil, error: error.localizedDescription)
                 }
             }
+
+        case "update":
+            Task {
+                do {
+                    try await Updater.fetch()
+                    self.reloadPage()
+                } catch {
+                    self.run("window.__updateStatus && window.__updateStatus(\(Self.literal(error.localizedDescription)));")
+                }
+            }
+
+        case "resetContent":
+            Updater.reset()
+            reloadPage()
 
         default:
             break

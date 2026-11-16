@@ -3,7 +3,7 @@
 import hashlib,os
 def uid(n): return hashlib.md5(n.encode()).hexdigest()[:24].upper()
 NAME='DailyPhilosophy'
-sources=['DailyPhilosophyApp.swift','ContentView.swift','WebView.swift','Keychain.swift','Store.swift','ClaudeClient.swift']
+sources=['DailyPhilosophyApp.swift','ContentView.swift','WebView.swift','Keychain.swift','Store.swift','ClaudeClient.swift','Updater.swift']
 res=[('Resources/index.html','index.html','text.html'),('Assets.xcassets','Assets.xcassets','folder.assetcatalog')]
 O=[]
 def obj(i,body): O.append('\t\t%s = %s;'%(i,body))

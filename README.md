@@ -19,6 +19,10 @@ Open the app, go to **Settings** (button at the bottom of Today), paste an Anthr
 - Living thinkers get a third-person guide, not an impersonation.
 - Each message costs a small amount on your API account.
 
+## Updating without Xcode
+
+Open the app and tap **Update app** on Today (or in Settings). It downloads the newest `index.html` from this repo's `main` branch, so content changes need no rebuild. GitHub can take a few minutes to serve a fresh push. **Settings > Go back to the built-in version** removes the downloaded copy. Changes to the Swift code still need an Xcode run.
+
 ## Updating the content
 
 The app lives in the web file. After editing it, run `./sync_web.sh path/to/index.html` and rebuild. If you add or remove Swift files, run `python3 tools/gen_pbxproj.py` (or use `project.yml` with XcodeGen).

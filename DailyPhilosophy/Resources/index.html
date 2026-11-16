@@ -1885,6 +1885,8 @@ var HASKEY=!!window.__nativeHasKey;
 function nativePost(o){try{window.webkit.messageHandlers.dp.postMessage(o);}catch(e){}}
 var pending={},reqN=0;
 window.__reply=function(id,text,err){var p=pending[id];if(!p)return;delete pending[id];if(err)p.rej(new Error(err));else p.res(text);};
+var UPD='';
+window.__updateStatus=function(msg){UPD=msg||'';if(typeof render==='function')render(false);};
 window.__keyStatus=function(has){HASKEY=!!has;if(typeof V!=="undefined"&&V&&(V.name==='settings'||V.name==='chat')&&!V.busy&&typeof render==="function")render(false);};
 function askAI(system,msgs){
   return new Promise(function(res,rej){
@@ -2407,6 +2409,7 @@ function viewSettings(){
     '<label class="lbl" for="keyin" style="margin-top:12px">'+(HASKEY?'Replace key':'Paste key')+'</label><input id="keyin" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="sk-ant-…" class="textin">'+
     '<button type="button" class="btn" style="margin-top:10px" data-act="saveKey">Save key</button>'+
     (HASKEY?'<button type="button" class="btn ghost" data-act="delKey">Remove key from this phone</button>':'')+'</div>'+
+    '<div class="panel"><p class="eyebrow">App content</p><p class="body" style="margin-top:6px">Update downloads the latest version of the app from GitHub. Your progress and chats stay.</p><button type="button" class="btn secondary" style="margin-top:10px" data-act="update">Update app</button>'+(UPD?'<p class="note" role="status">'+esc(UPD)+'</p>':'')+'<button type="button" class="btn ghost" data-act="resetContent">Go back to the built-in version</button></div>'+
     '<p class="note">Chats are sent to Anthropic’s API using your key, so they cost a little per message. Nothing else leaves your phone.</p>';
   return '<div class="stack"><div><p class="greet">Settings</p><h1 class="title">Talk to the thinkers</h1></div>'+body+
     '<button type="button" class="btn secondary" data-act="go" data-to="home">Back to Today</button></div>'+tabbar('');
@@ -2444,7 +2447,7 @@ function viewHome(){
     '<div><p class="greet">'+esc(greeting())+' · '+esc(dateLabel())+'</p><h1 class="title">One idea. Then you’re done.</h1></div>'+
     main+
     '<div class="met"><p class="eyebrow plain">Met '+S.seen.length+' of '+THINKERS.length+' thinkers</p><div class="dots" aria-hidden="true">'+dots+'</div></div>'+
-    '<p class="note" id="syncnote">'+esc(syncText())+'</p>'+(NATIVE?'<button type="button" class="btn ghost" data-act="go" data-to="settings">Settings</button>':'')+'</div>'+tabbar('home');
+    '<p class="note" id="syncnote">'+esc(syncText())+'</p>'+(NATIVE?'<button type="button" class="btn secondary" data-act="update">Update app</button>'+(UPD?'<p class="note" role="status">'+esc(UPD)+'</p>':'')+'<button type="button" class="btn ghost" data-act="go" data-to="settings">Settings</button>':'')+'</div>'+tabbar('home');
 }
 
 function viewCard(){
@@ -2758,6 +2761,8 @@ app.addEventListener('click',function(e){
       if(ki&&ki.value.trim()){nativePost({type:'setKey',key:ki.value.trim()});ki.value='';}
       break;
     case 'delKey':nativePost({type:'delKey'});break;
+    case 'update':UPD='Checking for updates…';render(false);nativePost({type:'update'});break;
+    case 'resetContent':UPD='';nativePost({type:'resetContent'});break;
     case 'bonusDeeper':
       if(S.day.bonus>=2)return;
       S.day.bonus++;
