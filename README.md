@@ -1,6 +1,6 @@
 # Daily Philosophy
 
-A personal iPhone app: one idea a day, a map of 158 thinkers that fills in as you learn, a deeper read on each, and a conversation with any of them.
+A personal iPhone app: one idea a day, a 9-module Course that follows DK's *Philosophy: A Complete Course* (89 lessons with original explanations), a map of 158 thinkers that fills in as you learn, a deeper read on each, and a conversation with any of them.
 
 It is a SwiftUI shell around a bundled web app (`DailyPhilosophy/Resources/index.html`). Your progress is stored on the phone. Only the chat needs internet.
 
